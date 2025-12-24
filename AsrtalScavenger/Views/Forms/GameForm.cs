@@ -59,7 +59,7 @@ public partial class GameForm : Form
         };
         _gameTimer.Start();
 
-        KeyPreview = true; // Для обработки Escape на форме
+        KeyPreview = true; 
         KeyDown += OnKeyDown;
         KeyUp += OnKeyUp;
         Paint += OnPaint;

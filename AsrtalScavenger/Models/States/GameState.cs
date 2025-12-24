@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel; // для ReadOnlyDictionary
 using AstralScavenger.Models.Entities;
 
 namespace AstralScavenger.Models.States;
@@ -9,6 +8,7 @@ public class GameState
     public List<Debris> Debris { get; set; } = new();
     public Player Player { get; set; } = new();
     public int Score { get; set; }
+    public int ResourceScore { get; set; } = 0; 
 
     public int CollectedMetal { get; set; }
     public int CollectedGold { get; set; }
@@ -43,6 +43,9 @@ public class GameState
         { GameLevel.StaticInverted, GameDifficulty.Normal },
         { GameLevel.DarkStatic, GameDifficulty.Normal },
         { GameLevel.DarkInverted, GameDifficulty.Normal },
+        { GameLevel.RichHuntPlus, GameDifficulty.Normal },
+        { GameLevel.RichHuntPlusDark, GameDifficulty.Normal },
+        { GameLevel.RichHuntPlusChaos, GameDifficulty.Normal },
         { GameLevel.Survival, GameDifficulty.Normal }
     };
 

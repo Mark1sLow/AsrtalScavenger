@@ -148,20 +148,23 @@ public class Renderer
         DrawBackground(g);
         var titleFont = new Font("Arial", 28, FontStyle.Bold);
         var titleSize = g.MeasureString("ВЫБЕРИТЕ УРОВЕНЬ", titleFont);
-        g.DrawString("ВЫБЕРИТЕ УРОВЕНЬ", titleFont, Brushes.White, _width / 2 - titleSize.Width / 2, 150);
+        g.DrawString("ВЫБЕРИТЕ УРОВЕНЬ", titleFont, Brushes.White, _width / 2 - titleSize.Width / 2, 60);
 
         var buttonWidth = 240;
         var buttonHeight = 60;
         var spacing = 20;
         var cols = 3;
-        var rows = 4;
-        var startX = _width / 2 - (cols * buttonWidth + (cols - 1) * spacing) / 2;
-        var startY = 250;
+        int totalLevels = 15; 
 
-        for (int i = 0; i < 12; i++)
+        int rows = (int)Math.Ceiling((double)totalLevels / cols); 
+
+        var startX = _width / 2 - (cols * buttonWidth + (cols - 1) * spacing) / 2;
+        var startY = 150;
+
+        for (int i = 0; i < totalLevels; i++) 
         {
-            int col = i % cols;
-            int row = i / cols;
+            int col = i % cols; 
+            int row = i / cols; 
             var rect = new Rectangle(
                 startX + col * (buttonWidth + spacing),
                 startY + row * (buttonHeight + spacing),
@@ -171,7 +174,8 @@ public class Renderer
             DrawButton(g, rect, $"УРОВЕНЬ {i + 1}");
         }
 
-        var backButton = new Rectangle(_width / 2 - buttonWidth / 2, startY + rows * (buttonHeight + spacing) + 20, buttonWidth, buttonHeight);
+        var backButtonY = startY + rows * (buttonHeight + spacing) + 20;
+        var backButton = new Rectangle(_width / 2 - 240 / 2, backButtonY, 240, 60);
         DrawButton(g, backButton, "НАЗАД");
     }
 
@@ -251,7 +255,7 @@ public class Renderer
                 isDarkLevel = true;
             }
         }
-        else if (_state.CurrentLevel is GameLevel.DarkZone or GameLevel.DarkStatic or GameLevel.DarkInverted)
+        else if (_state.CurrentLevel is GameLevel.DarkZone or GameLevel.DarkStatic or GameLevel.DarkInverted or GameLevel.RichHuntPlusDark)
         {
             isDarkLevel = true;
         }
@@ -402,24 +406,25 @@ public class Renderer
 
         if (_state.CurrentLevel == GameLevel.Survival)
         {
-            string resourcesText = $"РЕСУРСЫ: {_state.TotalResourcesCollected}";
+            string resourcesText = $"РЕСУРСЫ: {_state.ResourceScore}"; 
             g.DrawString(resourcesText, font, Brushes.White, startX, 150);
         }
+
         else if (_state.UsesResourceGoals)
         {
             float metalPercent = _state.RequiredMetal == 0 ? 1f : Math.Min(1f, (float)_state.CollectedMetal / _state.RequiredMetal);
             var metalBarRect = new Rectangle(startX, 150, barWidth, barHeight);
-            DrawProgressBar(g, metalBarRect, metalPercent, Color.LightGray, "ОСТАЛОСЬ СОБРАТЬ МЕТАЛЛА", font, true);
+            DrawProgressBar(g, metalBarRect, metalPercent, Color.LightGray, "МЕТАЛЛ", font, true);
 
             float goldPercent = _state.RequiredGold == 0 ? 1f : Math.Min(1f, (float)_state.CollectedGold / _state.RequiredGold);
             var goldBarRect = new Rectangle(startX, 200, barWidth, barHeight);
-            DrawProgressBar(g, goldBarRect, goldPercent, Color.Gold, "ОСТАЛОСЬ СОБРАТЬ ЗОЛОТА", font, true);
+            DrawProgressBar(g, goldBarRect, goldPercent, Color.Gold, "ЗОЛОТО", font, true);
 
             if (_state.RequiredDiamond > 0)
             {
                 float diamondPercent = _state.RequiredDiamond == 0 ? 1f : Math.Min(1f, (float)_state.CollectedDiamond / _state.RequiredDiamond);
                 var diamondBarRect = new Rectangle(startX, 250, barWidth, barHeight);
-                DrawProgressBar(g, diamondBarRect, diamondPercent, Color.Cyan, "ОСТАЛОСЬ СОБРАТЬ АЛМАЗА", font, true);
+                DrawProgressBar(g, diamondBarRect, diamondPercent, Color.Cyan, "АЛМАЗЫ", font, true);
             }
         }
         else
@@ -436,6 +441,9 @@ public class Renderer
                 GameLevel.StaticInverted => 150,
                 GameLevel.DarkStatic => 200,
                 GameLevel.DarkInverted => 150,
+                GameLevel.RichHuntPlus => 1050,
+                GameLevel.RichHuntPlusDark => 1050,
+                GameLevel.RichHuntPlusChaos => 2100,
                 _ => 100
             };
 

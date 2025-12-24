@@ -75,40 +75,43 @@ public class GameLogic
 
     private void CheckCollisions(GameState state)
     {
-        var playerRect = state.Player.Hitbox;
+        var playerRect = new Rectangle(state.Player.Position.X, state.Player.Position.Y, state.Player.Size, state.Player.Size);
 
         foreach (var d in state.Debris)
         {
             if (!d.IsActive) continue;
-            var debrisRect = d.Hitbox;
+            var debrisRect = new Rectangle(d.Position.X, d.Position.Y, d.Size, d.Size);
 
             if (playerRect.IntersectsWith(debrisRect))
             {
                 if (d.IsCollectible)
                 {
-                    if (state.CurrentLevel == GameLevel.Survival)
+                    if (state.CurrentLevel == GameLevel.Survival) 
                     {
                         switch (d.Type)
                         {
                             case DebrisType.Metal:
-                                state.TotalResourcesCollected++;
-                                state.Score += 10;
+                                state.TotalResourcesCollected++; 
+                                state.ResourceScore += 10;       
+                                state.Score += 10;               
                                 break;
                             case DebrisType.Gold:
                                 state.TotalResourcesCollected++;
+                                state.ResourceScore += 15;
                                 state.Score += 15;
                                 break;
                             case DebrisType.Diamond:
                                 state.TotalResourcesCollected++;
+                                state.ResourceScore += 20;
                                 state.Score += 20;
                                 break;
                             case DebrisType.Fuel:
-                                state.TimeLeft = Math.Min(60f, state.TimeLeft + 30f);
+                                state.TimeLeft = Math.Min(60f, state.TimeLeft + 30f); 
                                 break;
                             case DebrisType.Energy:
                                 int maxHealth = state.GetDifficultyForLevel(state.CurrentLevel) switch
                                 {
-                                    GameDifficulty.Easy => 10,
+                                    GameDifficulty.Easy => 5,
                                     GameDifficulty.Normal => 3,
                                     GameDifficulty.Hard => 2,
                                     GameDifficulty.Extreme => 1,
@@ -121,26 +124,29 @@ public class GameLogic
                                 break;
                         }
                     }
-                    else
+                    else 
                     {
                         switch (d.Type)
                         {
                             case DebrisType.Metal:
                                 state.Score += 10;
                                 state.CollectedMetal++;
+                                state.TotalResourcesCollected++; 
                                 break;
                             case DebrisType.Gold:
                                 state.Score += 15;
                                 state.CollectedGold++;
+                                state.TotalResourcesCollected++;
                                 break;
                             case DebrisType.Diamond:
                                 state.Score += 20;
                                 state.CollectedDiamond++;
+                                state.TotalResourcesCollected++;
                                 break;
                             case DebrisType.Energy:
                                 int maxHealth = state.GetDifficultyForLevel(state.CurrentLevel) switch
                                 {
-                                    GameDifficulty.Easy => 10,
+                                    GameDifficulty.Easy => 5,
                                     GameDifficulty.Normal => 3,
                                     GameDifficulty.Hard => 2,
                                     GameDifficulty.Extreme => 1,
@@ -152,7 +158,14 @@ public class GameLogic
                                 }
                                 break;
                             case DebrisType.Fuel:
-                                state.TimeLeft += 20f;
+                                if (state.CurrentLevel == GameLevel.Survival)
+                                {
+                                    state.TimeLeft = Math.Min(60f, state.TimeLeft + 30f);
+                                }
+                                else
+                                {
+                                    state.TimeLeft += 20f; 
+                                }
                                 break;
                         }
                     }

@@ -104,11 +104,13 @@ public class GameController
         var buttonHeight = 60;
         var spacing = 20;
         var cols = 3;
-        var rows = 4;
-        var startX = _width / 2 - (cols * buttonWidth + (cols - 1) * spacing) / 2;
-        var startY = 250;
+        int totalLevels = 15; 
+        int rows = (int)Math.Ceiling((double)totalLevels / cols); 
 
-        for (int i = 0; i < 12; i++)
+        var startX = _width / 2 - (cols * buttonWidth + (cols - 1) * spacing) / 2;
+        var startY = 150;
+
+        for (int i = 0; i < totalLevels; i++) 
         {
             int col = i % cols;
             int row = i / cols;
@@ -121,14 +123,15 @@ public class GameController
 
             if (rect.Contains(mousePos))
             {
-                _state.CurrentLevel = (GameLevel)(i + 1);
+                _state.CurrentLevel = (GameLevel)(i + 1); 
                 _state.CurrentScreen = GameScreen.Playing;
                 ResetGameState();
                 return;
             }
         }
 
-        var backButton = new Rectangle(_width / 2 - buttonWidth / 2, startY + rows * (buttonHeight + spacing) + 20, buttonWidth, buttonHeight);
+        var backButtonY = startY + rows * (buttonHeight + spacing) + 20;
+        var backButton = new Rectangle(_width / 2 - 240 / 2, backButtonY, 240, 60);
         if (backButton.Contains(mousePos))
         {
             _state.CurrentScreen = GameScreen.Menu;
@@ -293,7 +296,7 @@ public class GameController
             _state.CurrentScreen = GameScreen.Playing;
             ResetGameState();
         }
-    }
+    }   
 
     public void HandleEscape()
     {
@@ -312,6 +315,7 @@ public class GameController
         _state.CollectedGold = 0;
         _state.CollectedDiamond = 0;
         _state.TotalResourcesCollected = 0;
+        _state.ResourceScore = 0;
         _state.IsGameOver = false;
         _state.IsLevelComplete = false;
 

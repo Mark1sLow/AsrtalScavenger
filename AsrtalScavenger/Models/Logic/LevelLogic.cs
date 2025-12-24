@@ -47,8 +47,17 @@ public class LevelLogic
             case GameLevel.DarkInverted:
                 GenerateDebrisForLevel11(state, width, height);
                 break;
-            case GameLevel.Survival:
+            case GameLevel.RichHuntPlus:
                 GenerateDebrisForLevel12(state, width, height);
+                break;
+            case GameLevel.RichHuntPlusDark:
+                GenerateDebrisForLevel13(state, width, height);
+                break;
+            case GameLevel.RichHuntPlusChaos:
+                GenerateDebrisForLevel14(state, width, height);
+                break;
+            case GameLevel.Survival:
+                GenerateDebrisForLevel15(state, width, height);
                 break;
             default:
                 GenerateDebrisForLevelDefault(state, width, height);
@@ -56,10 +65,9 @@ public class LevelLogic
         }
     }
 
-
     private void GenerateDebrisForLevel1(GameState state, int width, int height)
     {
-        int spawnChance = 15; // Базовый шанс
+        int spawnChance = 15; 
         if (_rand.Next(0, 100) < spawnChance)
         {
             var side = _rand.Next(0, 4);
@@ -681,6 +689,168 @@ public class LevelLogic
 
     private void GenerateDebrisForLevel12(GameState state, int width, int height)
     {
+        int spawnChance = 20;
+        if (_rand.Next(0, 100) < spawnChance)
+        {
+            var side = _rand.Next(0, 4);
+            Point pos, vel;
+
+            switch (side)
+            {
+                case 0: pos = new Point(_rand.Next(0, width), -45); vel = new Point(_rand.Next(-4, 5), _rand.Next(1, 6)); break;
+                case 1: pos = new Point(_rand.Next(0, width), height + 45); vel = new Point(_rand.Next(-4, 5), _rand.Next(-6, -1)); break;
+                case 2: pos = new Point(-45, _rand.Next(0, height)); vel = new Point(_rand.Next(1, 6), _rand.Next(-4, 5)); break;
+                case 3: pos = new Point(width + 45, _rand.Next(0, height)); vel = new Point(_rand.Next(-6, -1), _rand.Next(-4, 5)); break;
+                default: pos = new Point(0, 0); vel = new Point(0, 0); break;
+            }
+
+            int r = _rand.Next(0, 100);
+            DebrisType debrisType;
+            bool isCollectible = true;
+            int size = 45;
+
+            if (r < 5)
+            {
+                debrisType = DebrisType.Diamond;
+            }
+            else if (r < 10)
+            {
+                debrisType = DebrisType.Gold;
+            }
+            else if (r < 25)
+            {
+                debrisType = DebrisType.Metal;
+            }
+            else
+            {
+                isCollectible = false;
+                debrisType = DebrisType.Standard;
+                size = _rand.Next(45, 80);
+            }
+
+            state.Debris.Add(new Debris
+            {
+                Position = pos,
+                Velocity = vel,
+                IsCollectible = isCollectible,
+                Type = debrisType,
+                Size = isCollectible ? 45 : size
+            });
+        }
+    }
+
+    private void GenerateDebrisForLevel13(GameState state, int width, int height)
+    {
+        int spawnChance = 15;
+        if (_rand.Next(0, 100) < spawnChance)
+        {
+            var side = _rand.Next(0, 4);
+            Point pos, vel;
+
+            switch (side)
+            {
+                case 0: pos = new Point(_rand.Next(0, width), -45); vel = new Point(_rand.Next(-4, 5), _rand.Next(1, 6)); break;
+                case 1: pos = new Point(_rand.Next(0, width), height + 45); vel = new Point(_rand.Next(-4, 5), _rand.Next(-6, -1)); break;
+                case 2: pos = new Point(-45, _rand.Next(0, height)); vel = new Point(_rand.Next(1, 6), _rand.Next(-4, 5)); break;
+                case 3: pos = new Point(width + 45, _rand.Next(0, height)); vel = new Point(_rand.Next(-6, -1), _rand.Next(-4, 5)); break;
+                default: pos = new Point(0, 0); vel = new Point(0, 0); break;
+            }
+
+            int r = _rand.Next(0, 100);
+            DebrisType debrisType;
+            bool isCollectible = true;
+            int size = 45;
+
+            if (r < 5)
+            {
+                debrisType = DebrisType.Diamond;
+            }
+            else if (r < 10)
+            {
+                debrisType = DebrisType.Gold;
+            }
+            else if (r < 25)
+            {
+                debrisType = DebrisType.Metal;
+            }
+            else
+            {
+                isCollectible = false;
+                debrisType = DebrisType.Standard;
+                size = _rand.Next(45, 80);
+            }
+
+            state.Debris.Add(new Debris
+            {
+                Position = pos,
+                Velocity = vel,
+                IsCollectible = isCollectible,
+                Type = debrisType,
+                Size = isCollectible ? 45 : size
+            });
+        }
+    }
+
+    private void GenerateDebrisForLevel14(GameState state, int width, int height)
+    {
+        int spawnChance = 23;
+        if (_rand.Next(0, 100) < spawnChance)
+        {
+            var side = _rand.Next(0, 4);
+            Point pos, vel;
+
+            switch (side)
+            {
+                case 0: pos = new Point(_rand.Next(0, width), -45); vel = new Point(_rand.Next(-4, 5), _rand.Next(1, 6)); break;
+                case 1: pos = new Point(_rand.Next(0, width), height + 45); vel = new Point(_rand.Next(-4, 5), _rand.Next(-6, -1)); break;
+                case 2: pos = new Point(-45, _rand.Next(0, height)); vel = new Point(_rand.Next(1, 6), _rand.Next(-4, 5)); break;
+                case 3: pos = new Point(width + 45, _rand.Next(0, height)); vel = new Point(_rand.Next(-6, -1), _rand.Next(-4, 5)); break;
+                default: pos = new Point(0, 0); vel = new Point(0, 0); break;
+            }
+
+            int r = _rand.Next(0, 100);
+            DebrisType debrisType;
+            bool isCollectible = true;
+            int size = 45;
+
+            if (r < 5)
+            {
+                debrisType = DebrisType.Diamond;
+            }
+            else if (r < 10)
+            {
+                debrisType = DebrisType.Gold;
+            }
+            else if (r < 25)
+            {
+                debrisType = DebrisType.Metal;
+            }
+            else
+            {
+                isCollectible = false;
+                debrisType = DebrisType.Standard;
+                size = _rand.Next(45, 80);
+            }
+
+            state.Debris.Add(new Debris
+            {
+                Position = pos,
+                Velocity = vel,
+                IsCollectible = isCollectible,
+                Type = debrisType,
+                Size = isCollectible ? 45 : size
+            });
+        }
+
+        if (state.Debris.Count(d => d.IsStatic) == 0)
+        {
+            AddStaticHazards(state, width, height, count: _rand.Next(12, 16));
+        }
+    }
+
+
+    private void GenerateDebrisForLevel15(GameState state, int width, int height)
+    {
         if (state.ElapsedTime < 200f)
         {
             float elapsedMinutes = state.ElapsedTime / 10f;
@@ -1017,6 +1187,15 @@ public class LevelLogic
             case GameLevel.DarkInverted:    
                 state.TimeLeft = 120f;
                 break;
+            case GameLevel.RichHuntPlus:
+                state.TimeLeft = 120f;
+                break;
+            case GameLevel.RichHuntPlusDark:
+                state.TimeLeft = 120f;
+                break;
+            case GameLevel.RichHuntPlusChaos:
+                state.TimeLeft = 240f;
+                break;
             case GameLevel.Survival:
                 state.TimeLeft = 60f;
                 state.UsesResourceGoals = false; 
@@ -1051,6 +1230,9 @@ public class LevelLogic
                 GameLevel.StaticInverted => 150,
                 GameLevel.DarkStatic => 200,
                 GameLevel.DarkInverted => 150,
+                GameLevel.RichHuntPlus => 1050,
+                GameLevel.RichHuntPlusDark => 1050,
+                GameLevel.RichHuntPlusChaos => 2100,
                 _ => 100
             };
             return state.Score >= required;
@@ -1070,6 +1252,9 @@ public class LevelLogic
         GameLevel.StaticInverted => 120.0f,
         GameLevel.DarkStatic => 90.0f,
         GameLevel.DarkInverted => 120.0f,
+        GameLevel.RichHuntPlus => 120.0f,
+        GameLevel.RichHuntPlusDark => 120.0f,
+        GameLevel.RichHuntPlusChaos => 240.0f,
         GameLevel.Survival => float.PositiveInfinity, 
         _ => 90.0f
     };
